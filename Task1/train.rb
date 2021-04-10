@@ -11,8 +11,6 @@ class Train
     @type = type
     @cars = cars
     @speed = 0
-    @route = []
-    @current_station = {}
   end
 
   def increase_speed
@@ -37,17 +35,17 @@ class Train
     end
   end
 
-  def add_route(stations)
-    @route = stations
+  def add_route(route)
+    @route = route
     @current_station = @route.stations.first
-    @route.stations[0].train_arrival(self)
+    @current_station.train_arrival(self)
   end
 
   def move_forward
     return if @current_station.eql?(@route.stations.last)
 
     @current_station.train_departure(self)
-    @route.stations[@route.stations.index(@current_station) + 1].train_arrival(self)
+    @next_station.train_arrival(self)
     @current_station = @route.stations[@route.stations.index(@current_station) + 1]
   end
 
@@ -55,20 +53,17 @@ class Train
     return if @current_station.eql?(@route.stations.first)
 
     @current_station.train_departure(self)
-    @route.stations[@route.stations.index(@current_station) - 1].train_arrival(self)
+    @previous_station.train_arrival(self)
     @current_station = @route.stations[@route.stations.index(@current_station) - 1]
   end
 
-  def surround_stations
+  def previous_station
     previous_station = @route.stations[@route.stations.index(@current_station) - 1]
+    @previous_station = previous_station unless @current_station.eql?(@route.stations.first)
+  end
+
+  def next_station
     next_station = @route.stations[@route.stations.index(@current_station) + 1]
-
-    if @current_station.eql?(@route.stations.first)
-      (return [@current_station, next_station])
-    elsif @current_station.eql?(@route.stations.last)
-      return [previous_station, @current_station]
-    end
-
-    [previous_station, @current_station, next_station]
+    @next_station = next_station unless @current_station.eql?(@route.stations.last)
   end
 end
