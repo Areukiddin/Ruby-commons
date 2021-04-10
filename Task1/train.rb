@@ -2,8 +2,7 @@
 
 # ./train.rb
 class Train
-  attr_accessor :cars, :current_station
-  attr_writer :route
+  attr_accessor :cars, :current_station, :route
   attr_reader :speed, :number, :type
 
   def initialize(number, type, cars)
@@ -24,14 +23,16 @@ class Train
   def hook_car
     if @speed.zero?
       @cars += 1
-    else puts 'Stop train before hooking car'
+    else
+      puts 'Stop train before hooking car'
     end
   end
 
   def unhook_car
     if @speed.zero?
       @cars -= 1
-    else puts 'Stop train before unhooking car'
+    else
+      puts 'Stop train before unhooking car'
     end
   end
 
@@ -42,28 +43,26 @@ class Train
   end
 
   def move_forward
-    return if @current_station.eql?(@route.stations.last)
+    return unless next_station
 
     @current_station.train_departure(self)
-    @next_station.train_arrival(self)
-    @current_station = @route.stations[@route.stations.index(@current_station) + 1]
+    @current_station = next_station
+    @current_station.train_arrival(self)
   end
 
   def move_toward
-    return if @current_station.eql?(@route.stations.first)
+    return unless previous_station
 
     @current_station.train_departure(self)
-    @previous_station.train_arrival(self)
-    @current_station = @route.stations[@route.stations.index(@current_station) - 1]
+    @current_station = previous_station
+    @current_station.train_arrival(self)
   end
 
   def previous_station
-    previous_station = @route.stations[@route.stations.index(@current_station) - 1]
-    @previous_station = previous_station unless @current_station.eql?(@route.stations.first)
+    @route.stations[@route.stations.index(@current_station) - 1] unless @current_station.eql?(@route.stations.first)
   end
 
   def next_station
-    next_station = @route.stations[@route.stations.index(@current_station) + 1]
-    @next_station = next_station unless @current_station.eql?(@route.stations.last)
+    @route.stations[@route.stations.index(@current_station) + 1] unless @current_station.eql?(@route.stations.last)
   end
 end

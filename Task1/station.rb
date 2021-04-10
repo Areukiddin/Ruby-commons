@@ -10,19 +10,15 @@ class Station
     @trains = []
   end
 
-  def train_hash(train)
-    { number: train.number, type: train.type }
-  end
-
   def train_arrival(train)
-    @trains << train_hash(train)
+    @trains << train
   end
 
   def train_departure(train)
-    @trains.delete(train_hash(train)) unless @trains.length.zero?
+    @trains.delete(train) unless @trains.length.zero?
   end
 
-  def typed_trains_list(type)
-    @trains.select { |train| train[:type] == type }
+  def trains_by(type)
+    @trains.select { |train| train.type.eql?(type) }
   end
 end
