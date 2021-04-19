@@ -14,6 +14,5 @@ class Route
 
   def delete_station(station)
     @stations.delete(station) unless station.eql?(@stations.first) || station.eql?(@stations.last)
-    puts "#{@stations}"
   end
 end

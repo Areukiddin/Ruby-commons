@@ -20,46 +20,45 @@ class Main
   end
 
   def main
-    catch(:exit) do
-      loop do
-        system('clear')
-        main_menu
-        first_command = command
-        throw :exit if first_command == 'q'
-        case first_command
-        when 'cs'
-          option(menu_create_station)
-        when 'cct'
-          option(menu_create_cargo_train)
-        when 'cpt'
-          option(menu_create_passenger_train)
-        when 'cr'
-          option(menu_create_route)
-        when 'as'
-          option(menu_add_station)
-        when 'ds'
-          option(menu_delete_station)
-        when 'ar'
-          option(menu_add_route)
-        when 'ccc'
-          option(menu_create_cargo_car)
-        when 'cpc'
-          option(menu_create_passenger_car)
-        when 'h'
-          option(menu_hook_car)
-        when 'uh'
-          option(menu_unhook_car)
-        when 'forw'
-          option(menu_move_forward)
-        when 'tow'
-          option(menu_move_toward)
-        when 'check_st'
-          option(menu_show_stations)
-        when 'check_tr'
-          option(menu_show_trains_on_station)
-        else
-          option(wrong)
-        end
+    loop do
+      system('clear')
+      main_menu
+      first_command = command
+      break if first_command == 'q'
+
+      case first_command
+      when 'cs'
+        option(menu_create_station)
+      when 'cct'
+        option(menu_create_cargo_train)
+      when 'cpt'
+        option(menu_create_passenger_train)
+      when 'cr'
+        option(menu_create_route)
+      when 'as'
+        option(menu_add_station)
+      when 'ds'
+        option(menu_delete_station)
+      when 'ar'
+        option(menu_add_route)
+      when 'ccc'
+        option(menu_create_cargo_car)
+      when 'cpc'
+        option(menu_create_passenger_car)
+      when 'h'
+        option(menu_hook_car)
+      when 'uh'
+        option(menu_unhook_car)
+      when 'forw'
+        option(menu_move_forward)
+      when 'tow'
+        option(menu_move_toward)
+      when 'check_st'
+        option(menu_show_stations)
+      when 'check_tr'
+        option(menu_show_trains_on_station)
+      else
+        option(wrong)
       end
     end
   end

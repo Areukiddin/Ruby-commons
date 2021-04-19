@@ -3,7 +3,6 @@
 # ./pass_car.rb
 class PassengerCar < Car
   def initialize(number, type = :passenger)
-    @number = number
     super
   end
 end
