@@ -1,11 +1,13 @@
-# frozen_string_literal: false
+require_relative 'instance_counter'
+require_relative 'produced_by'
 
-# ./route.rb
 class Route
+  include InstanceCounter
   attr_accessor :stations
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
+    register_instance
   end
 
   def add_station(station)

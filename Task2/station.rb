@@ -1,13 +1,23 @@
-# frozen_string_literal: false
+require_relative 'instance_counter'
 
-# ./station.rb
 class Station
+  include InstanceCounter
   attr_reader :name
   attr_accessor :trains
+
+  class << self
+    attr_reader :all
+
+    def add_instance
+      @all ||= []
+    end
+  end
 
   def initialize(name)
     @name = name
     @trains = []
+    register_instance
+    self.class.add_instance << self
   end
 
   def train_arrival(train)

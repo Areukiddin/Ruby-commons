@@ -1,7 +1,7 @@
-# frozen_string_literal: false
+require_relative 'produced_by'
 
-# ./car.rb
 class Car
+  include ProducedBy
   attr_reader :number, :type
 
   def initialize(number, type)

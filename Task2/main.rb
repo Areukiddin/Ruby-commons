@@ -1,5 +1,3 @@
-# frozen_string_literal: false
-
 require_relative './station'
 require_relative './route'
 require_relative './train'
@@ -9,7 +7,6 @@ require_relative './car'
 require_relative './cargo_car'
 require_relative './pass_car'
 
-# ./main.rb
 class Main
   attr_reader :stations, :route, :cars
 

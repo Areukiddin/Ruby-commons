@@ -1,7 +1,7 @@
-# frozen_string_literal: false
+require_relative 'instance_counter'
 
-# ./pass_train.rb
 class PassengerTrain < Train
+  include InstanceCounter
   def initialize(number, type = :passenger)
     super
   end
