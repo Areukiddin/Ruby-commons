@@ -1,15 +1,32 @@
-# frozen_string_literal: false
+require_relative 'instance_counter'
+require_relative 'produced_by'
 
-# ./train.rb
 class Train
+  include InstanceCounter
+  include ProducedBy
   attr_accessor :current_station, :route
   attr_reader :speed, :number, :type, :cars
+
+  class << self
+    attr_reader :trains
+
+    def add_train
+      @trains ||= []
+    end
+
+    def find(number)
+      result = @trains.filter { |train| train.number.eql?(number) }
+      result || nil
+    end
+  end
 
   def initialize(number, type)
     @number = number
     @type = type
     @speed = 0
     @cars = []
+    register_instance
+    self.class.add_train << self
   end
 
   def increase_speed
