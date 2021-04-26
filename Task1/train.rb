@@ -21,19 +21,11 @@ class Train
   end
 
   def hook_car
-    if @speed.zero?
-      @cars += 1
-    else
-      puts 'Stop train before hooking car'
-    end
+    @cars += 1 if @speed.zero?
   end
 
   def unhook_car
-    if @speed.zero?
-      @cars -= 1
-    else
-      puts 'Stop train before unhooking car'
-    end
+    @cars -= 1 if @speed.zero?
   end
 
   def add_route(route)
