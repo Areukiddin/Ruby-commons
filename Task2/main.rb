@@ -78,7 +78,6 @@ private
       @trains << CargoTrain.new(number)
       puts "Cargo train №#{number} created"
       show_trains
-      raise StandardError unless CargoTrain.new(number).valid?
     rescue StandardError
       puts 'Invalid train number, try again'
       retry
@@ -92,7 +91,6 @@ private
       @trains << PassengerTrain.new(number)
       puts "Passenger train №#{number} created"
       show_trains
-      raise StandardError unless PassengerTrain.new(number).valid?
     rescue StandardError
       puts 'Invalid train number, try again'
       retry
