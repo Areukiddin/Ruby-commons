@@ -30,6 +30,8 @@ class Main
         option(menu_create_cargo_train)
       when 'cpt'
         option(menu_create_passenger_train)
+      when 'cl'
+        option(menu_cars_list)
       when 'cr'
         option(menu_create_route)
       when 'as'
@@ -40,8 +42,12 @@ class Main
         option(menu_add_route)
       when 'ccc'
         option(menu_create_cargo_car)
+      when 'fc'
+        option(menu_fill_capacity)
       when 'cpc'
         option(menu_create_passenger_car)
+      when 'tp'
+        option(menu_take_place)
       when 'h'
         option(menu_hook_car)
       when 'uh'
@@ -63,6 +69,14 @@ class Main
 # Users will using text interface, so no need to show all methods
 
 private
+
+  def hash_pass(car)
+    { number: car.number, type: car.type, free_places: car.free_places, busy_places: car.busy_places }
+  end
+
+  def hash_cargo(car)
+    { number: car.number, type: car.type, empty_capacity: car.empty_capacity, filled_capacity: car.filled_capacity }
+  end
 
   def menu_create_station
     puts 'Enter station name'
@@ -95,6 +109,15 @@ private
       puts 'Invalid train number, try again'
       retry
     end
+  end
+
+  def menu_cars_list
+    puts 'Enter train number'
+    number = gets.chomp.to_sym
+    train = find_train(number)
+    puts train
+    train.scan_cars { |car| car_hash = hash_pass(car); puts car_hash } if train.type.eql?(:passenger)
+    train.scan_cars { |car| car_hash = hash_cargo(car); puts car_hash } if train.type.eql?(:cargo)
   end
 
   def menu_create_route
@@ -137,15 +160,39 @@ private
   def menu_create_cargo_car
     puts 'Enter car number'
     number = gets.chomp.to_sym
-    @cars << CargoCar.new(number)
+    puts 'Enter capacity'
+    capacity = gets.chomp.to_i
+    @cars << CargoCar.new(number, capacity)
     show_cars
+  end
+
+  def menu_fill_capacity
+    puts 'Enter car number'
+    number = gets.chomp.to_sym
+    car = find_car(number)
+    puts 'Enter capacity you want to fill'
+    capacity = gets.chomp.to_i
+    car.fill(capacity)
+    puts "Filled capacity: #{car.filled_capacity}"
+    puts "Empty capacity: #{car.empty_capacity}"
   end
 
   def menu_create_passenger_car
     puts 'Enter car number'
     number = gets.chomp.to_sym
-    @cars << PassengerCar.new(number)
+    puts 'Enter places'
+    places = gets.chomp.to_i
+    @cars << PassengerCar.new(number, places)
     show_cars
+  end
+
+  def menu_take_place
+    puts 'Enter car number'
+    number = gets.chomp.to_sym
+    car = find_car(number)
+    car.take_place
+    puts "Busy places: #{car.busy_places}"
+    puts "Free places left: #{car.free_places}"
   end
 
   def menu_hook_car
@@ -201,7 +248,7 @@ private
 
   def trains_list(name)
     station = find_station(name)
-    station.trains
+    station.scan_trains { |train| train_hash = { number: train.number, type: train.type, cars: train.cars.count }; puts train_hash }
   end
 
   def command
@@ -244,12 +291,15 @@ private
       cs - create station
       cct - create cargo train
       cpt - create passenger train
+      cl - cars list
       cr - create route
       as - add station
       ds - delete station
       ar - add route
       ccc - create cargo car
+      fc - fill capacity
       cpc - create passenger car
+      tp - take place
       h - hook car
       uh - unhook car
       forw - move forward

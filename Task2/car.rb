@@ -4,7 +4,7 @@ class Car
   include ProducedBy
   attr_reader :number, :type
 
-  def initialize(number, type)
+  def initialize(number, _, type)
     @number = number
     @type = type
     validate!

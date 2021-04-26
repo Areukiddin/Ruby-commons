@@ -5,7 +5,7 @@ class Station
   attr_reader :name
   attr_accessor :trains
 
-  NAME_FORMAT = /^[a-zа-я]+-?[0-9]+$/i.freeze
+  NAME_FORMAT = /^[a-zа-я]+-?[0-9]?+$/i.freeze
 
   class << self
     attr_reader :all
@@ -33,6 +33,10 @@ class Station
 
   def trains_by(type)
     @trains.select { |train| train.type.eql?(type) }
+  end
+
+  def scan_trains(&block)
+    @trains.each { |train| block.call(train) }
   end
 
   def valid?
