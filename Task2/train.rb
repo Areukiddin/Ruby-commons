@@ -7,6 +7,8 @@ class Train
   attr_accessor :current_station, :route
   attr_reader :speed, :number, :type, :cars
 
+  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
+
   class << self
     attr_reader :trains
 
@@ -23,10 +25,18 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
+    validate!
     @speed = 0
     @cars = []
     register_instance
     self.class.add_train << self
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def increase_speed
@@ -76,6 +86,12 @@ class Train
   end
 
   protected
+
+  def validate!
+    raise "Number can't be blank" if number.nil?
+    raise 'Invalid number format' if number !~ NUMBER_FORMAT
+    raise "Type can't be blank" if type.length.zero?
+  end
 
   # support methods, no need to be available in interface
   def able_to_unhook

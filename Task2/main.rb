@@ -72,19 +72,29 @@ private
   end
 
   def menu_create_cargo_train
-    puts 'Enter cargo train number'
-    number = gets.chomp.to_sym
-    @trains << CargoTrain.new(number)
-    puts "Cargo train №#{number} created"
-    show_trains
+    begin
+      puts 'Enter cargo train number'
+      number = gets.chomp.to_sym
+      @trains << CargoTrain.new(number)
+      puts "Cargo train №#{number} created"
+      show_trains
+    rescue StandardError
+      puts 'Invalid train number, try again'
+      retry
+    end
   end
 
   def menu_create_passenger_train
-    puts 'Enter passenger train number'
-    number = gets.chomp.to_sym
-    @trains << PassengerTrain.new(number)
-    puts "Passenger train №#{number} created"
-    show_trains
+    begin
+      puts 'Enter passenger train number'
+      number = gets.chomp.to_sym
+      @trains << PassengerTrain.new(number)
+      puts "Passenger train №#{number} created"
+      show_trains
+    rescue StandardError
+      puts 'Invalid train number, try again'
+      retry
+    end
   end
 
   def menu_create_route
@@ -200,7 +210,7 @@ private
   end
 
   def wrong
-    puts "Wrong command"
+    puts 'Wrong command'
   end
 
   def option(menu_option)
