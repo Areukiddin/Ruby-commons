@@ -85,6 +85,10 @@ class Train
     @route.stations[@route.stations.index(@current_station) + 1] unless @current_station.eql?(@route.stations.last)
   end
 
+  def scan_cars(&block)
+    @cars.each { |car| block.call(car) }
+  end
+
   protected
 
   def validate!
