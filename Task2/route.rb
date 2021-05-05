@@ -1,9 +1,17 @@
 require_relative 'instance_counter'
-require_relative 'produced_by'
+require_relative 'validation'
+require_relative 'accessors'
 
 class Route
   include InstanceCounter
+  include Accessors
+  include Validation
+
   attr_accessor :stations
+
+  attr_accessor_with_history :route_number
+  validate :route_number, :presence
+  validate :route_number, :type, Integer
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
@@ -17,19 +25,5 @@ class Route
 
   def delete_station(station)
     @stations.delete(station) unless station.eql?(@stations.first) || station.eql?(@stations.last)
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  protected
-
-  def validate!
-    raise "First station wasn't found/wrong argument type" unless @stations.first.instance_of?(Station)
-    raise "Last station wasn't found/wrong argument type" unless @stations.last.instance_of?(Station)
   end
 end
