@@ -6,9 +6,9 @@ class Station
   include InstanceCounter
   include Accessors
   include Validation
-  attr_accessor :trains
+  attr_accessor :trains, :name
 
-  NAME_FORMAT = /^[a-z]+-?[0-9]{1}$/i.freeze
+  NAME_FORMAT = /^[a-z]+-?[0-9]{1}?$/i.freeze
 
   strong_attr_accessor :code, Integer
   validate :name, :format, NAME_FORMAT
