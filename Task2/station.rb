@@ -1,11 +1,17 @@
 require_relative 'instance_counter'
+require_relative 'validation'
+require_relative 'accessors'
 
 class Station
   include InstanceCounter
-  attr_reader :name
-  attr_accessor :trains
+  include Accessors
+  include Validation
+  attr_accessor :trains, :name
 
-  NAME_FORMAT = /^[a-zа-я]+-?[0-9]?+$/i.freeze
+  NAME_FORMAT = /^[a-z]+-?[0-9]{1}?$/i.freeze
+
+  strong_attr_accessor :code, Integer
+  validate :name, :format, NAME_FORMAT
 
   class << self
     attr_reader :all
@@ -37,20 +43,5 @@ class Station
 
   def scan_trains(&block)
     @trains.each { |train| block.call(train) }
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  protected
-
-  def validate!
-    raise "Station name can't be blank" if name.length.zero?
-    raise "Name length can't be less then 4" if name.length < 4
-    raise 'Invalid name format' if name !~ NAME_FORMAT
   end
 end
